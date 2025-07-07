@@ -21,7 +21,11 @@
     "require": {
         "php": "^8.4",
         "ext-pdo": "*",
-        "ext-pdo_pgsql": "*"
+        "ext-pdo_pgsql": "*",
+        "league/route": "^6.2",
+        "league/container": "^5.1",
+        "laminas/laminas-diactoros": "^3.6",
+        "laminas/laminas-httphandlerrunner": "^2.12"
     },
     "require-dev": {
         "pestphp/pest": "^3.8",
