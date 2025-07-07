@@ -1,0 +1,30 @@
+{
+  "config": {
+    "run-mode": "docker",
+    "run-exec": "docker exec api"
+  },
+  "commit-msg": {
+    "enabled": false,
+    "actions": []
+  },
+  "pre-commit": {
+    "enabled": true,
+    "actions": [
+      {
+        "action": "php ./vendor/bin/phpstan analyse -c phpstan.neon",
+        "options": [],
+        "conditions": []
+      },
+      {
+        "action": "php ./vendor/bin/pint --test",
+        "options": [],
+        "conditions": []
+      },
+      {
+        "action": "php ./vendor/bin/pest",
+        "options": [],
+        "conditions": []
+      }
+    ]
+  }
+}

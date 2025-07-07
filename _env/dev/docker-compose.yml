@@ -1,0 +1,129 @@
+name: "vortex"
+
+services:
+  vortex-api:
+    container_name: vortex-api
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        HOST_UID: ${HOST_UID:-1000}
+        HOST_GID: ${HOST_GID:-1000}
+    env_file:
+      - .env
+    ports:
+      - "8080:${APP_API_PORT:-8080}"
+    depends_on:
+      vortex-db:
+        condition: service_healthy
+      otel-collector:
+        condition: service_started
+      nats-0:
+        condition: service_started
+      nats-1:
+        condition: service_started
+      nats-2:
+        condition: service_started
+    networks:
+      - vortex-network
+    working_dir: /app
+    volumes:
+      - .:/app:rw
+
+  vortex-db:
+    container_name: vortex-db
+    restart: always
+    image: "postgres:17-alpine"
+    ports:
+      - "5454:${APP_DB_PORT:-5432}"
+    environment:
+      POSTGRES_USER: ${APP_DB_USER:-username}
+      POSTGRES_PASSWORD: ${APP_DB_PASSWORD:-password}
+      POSTGRES_DB: ${APP_DB_NAME:-vortex-db}
+    volumes:
+      - vortex-data:/var/lib/postgresql/data:rw
+    networks:
+      - vortex-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  nats-0:
+    container_name: nats-0
+    image: nats:latest
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+    command: >-
+      --server_name n0 --cluster_name NATS --cluster nats://0.0.0.0:6222
+      --http_port 8222 --jetstream --store_dir /data/jetstream
+      --routes=nats://ruser:T0pS3cr3t@nats-1:6222,nats://ruser:T0pS3cr3t@nats-2:6222
+    volumes:
+      - nats-0-data:/data/jetstream
+    networks:
+      - vortex-network
+
+  nats-1:
+    container_name: nats-1
+    image: nats:latest
+    command: >-
+      --server_name n1 --cluster_name NATS --cluster nats://0.0.0.0:6222
+      --jetstream --store_dir /data/jetstream
+      --routes=nats://ruser:T0pS3cr3t@nats-0:6222,nats://ruser:T0pS3cr3t@nats-2:6222
+    volumes:
+      - nats-1-data:/data/jetstream
+    networks:
+      - vortex-network
+
+  nats-2:
+    container_name: nats-2
+    image: nats:latest
+    command: >-
+      --server_name n2 --cluster_name NATS --cluster nats://0.0.0.0:6222
+      --jetstream --store_dir /data/jetstream
+      --routes=nats://ruser:T0pS3cr3t@nats-0:6222,nats://ruser:T0pS3cr3t@nats-1:6222
+    volumes:
+      - nats-2-data:/data/jetstream
+    networks:
+      - vortex-network
+
+  jaeger:
+    container_name: jaeger
+    image: jaegertracing/all-in-one:1.71.0
+    ports:
+      - "16686:16686" # Jaeger UI
+      - "14269:14269"
+    networks:
+      - vortex-network
+
+  otel-collector:
+    container_name: otel-collector
+    image: otel/opentelemetry-collector-contrib:0.129.1
+    command: ["--config=/etc/otel-collector-config.yml"]
+    volumes:
+      - ./_env/dev/otel-collector-config.yml:/etc/otel-collector-config.yml
+    ports:
+      - "4317:4317" # OTLP gRPC
+      - "4318:4318" # OTLP HTTP
+    networks:
+      - vortex-network
+    depends_on:
+      jaeger:
+        condition: service_started
+
+volumes:
+  vortex-data:
+    driver: local
+  nats-0-data:
+    driver: local
+  nats-1-data:
+    driver: local
+  nats-2-data:
+    driver: local
+
+networks:
+  vortex-network:
+    driver: bridge

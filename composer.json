@@ -1,0 +1,46 @@
+{
+    "name": "marcelofabianov/vortex",
+    "version": "1.0.0",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Vortex\\": "src/",
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "analyze": "./vendor/bin/phpstan analyse -c phpstan.neon",
+        "lint": "./vendor/bin/pint",
+        "test": "./vendor/bin/pest",
+        "test:coverage": "./vendor/bin/pest --coverage",
+        "test:watch": "./vendor/bin/pest --watch",
+        "post-autoload-dump": [
+            "vendor/bin/captainhook install -f -s"
+        ]
+    },
+    "require": {
+        "php": "^8.4",
+        "ext-pdo": "*",
+        "ext-pdo_pgsql": "*"
+    },
+    "require-dev": {
+        "pestphp/pest": "^3.8",
+        "mockery/mockery": "^1.6",
+        "pyrech/composer-changelogs": "^2.1",
+        "ergebnis/composer-normalize": "^2.47",
+        "phpstan/phpstan": "^2.1",
+        "laravel/pint": "^1.23",
+        "captainhook/captainhook": "^5.25"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "pyrech/composer-changelogs": true,
+            "ergebnis/composer-normalize": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
