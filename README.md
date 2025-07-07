@@ -25,10 +25,10 @@ Siga os passos abaixo para configurar e executar o ambiente de desenvolvimento l
 
 Antes de começar, garanta que você tenha as seguintes ferramentas instaladas na sua máquina:
 
-- [Docker](https://www.docker.com/get-started)
-- [Docker Compose](https://docs.docker.com/compose/install/) (geralmente incluído com o Docker Desktop)
-- `make` (geralmente já vem instalado em sistemas Linux e macOS)
-- `git`
+-   [Docker](https://www.docker.com/get-started)
+-   [Docker Compose](https://docs.docker.com/compose/install/) (geralmente incluído com o Docker Desktop)
+-   `make` (geralmente já vem instalado em sistemas Linux e macOS)
+-   `git`
 
 ### Configuração do Ambiente
 
@@ -81,25 +81,26 @@ Todos os comandos principais são gerenciados pelo `Makefile`, executados a part
 
 Com o ambiente no ar, os serviços podem ser acessados nos seguintes endereços:
 
-- **API Vortex**: [http://localhost:8080](http://localhost:8080)
-- **Jaeger UI (Tracing)**: [http://localhost:16686](http://localhost:16686)
-- **NATS Monitoring**: [http://localhost:8222](http://localhost:8222)
+-   **API Vortex**: [http://localhost:8080](http://localhost:8080)
+-   **Jaeger UI (Tracing)**: [http://localhost:16686](http://localhost:16686)
+-   **NATS Monitoring**: [http://localhost:8222](http://localhost:8222)
 
 ### Conexão com o Banco de Dados (PostgreSQL)
 
 Para se conectar ao banco de dados usando um cliente de sua preferência (DBeaver, DataGrip, etc.), utilize as seguintes credenciais (baseadas no arquivo `.env`):
 
-- **Host**: `localhost`
-- **Porta**: `5454`
-- **Usuário**: `username`
-- **Senha**: `password`
-- **Banco de Dados**: `vortex-db`
+-   **Host**: `localhost`
+-   **Porta**: `5454`
+-   **Usuário**: `username`
+-   **Senha**: `password`
+-   **Banco de Dados**: `vortex-db`
 
 ## 📂 Estrutura de Diretórios
 
 ```bash
 .
 ├── api
+├── captainhook.json
 ├── composer.json
 ├── composer.lock
 ├── db
@@ -112,9 +113,13 @@ Para se conectar ao banco de dados usando um cliente de sua preferência (DBeave
 │       ├── dev.env
 │       ├── docker-compose.yml
 │       ├── Dockerfile
+│       ├── otel-collector-config.yml
 │       └── php.ini
+├── LICENSE
 ├── Makefile
+├── phpstan.neon
 ├── phpunit.xml
+├── pint.json
 ├── public
 │   └── index.php
 ├── README.md
@@ -124,7 +129,6 @@ Para se conectar ao banco de dados usando um cliente de sua preferência (DBeave
 │   │   └── Identity
 │   │       ├── App
 │   │       ├── Domain
-│   │       ├── IdentityContainer.php
 │   │       └── Infra
 │   ├── main.php
 │   └── Platform
@@ -133,5 +137,8 @@ Para se conectar ao banco de dados usando um cliente de sua preferência (DBeave
 │       ├── Container
 │       └── Port
 └── tests
+    ├── Feature
+    ├── Pest.php
+    ├── TestCase.php
     └── Unit
 ```
