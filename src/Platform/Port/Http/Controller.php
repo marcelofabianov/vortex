@@ -31,6 +31,9 @@ abstract class Controller
         return $response;
     }
 
+    /**
+     * @param array<string, mixed> $data
+     */
     protected function ok(array $data = []): ResponseInterface
     {
         return $this->json($data, HttpStatusCode::OK);
@@ -41,26 +44,41 @@ abstract class Controller
         return $this->responseFactory->createResponse(HttpStatusCode::NO_CONTENT->value);
     }
 
+    /**
+     * @param array<string, mixed> $data
+     */
     protected function created(array $data = []): ResponseInterface
     {
         return $this->json($data, HttpStatusCode::CREATED);
     }
 
+    /**
+     * @param array<string, mixed> $data
+     */
     protected function error(array $data = []): ResponseInterface
     {
         return $this->json($data, HttpStatusCode::INTERNAL_SERVER_ERROR);
     }
 
+    /**
+     * @param array<string, mixed> $data
+     */
     protected function notFound(array $data = []): ResponseInterface
     {
         return $this->json($data, HttpStatusCode::NOT_FOUND);
     }
 
+    /**
+     * @param array<string, mixed> $data
+     */
     protected function badRequest(array $data = []): ResponseInterface
     {
         return $this->json($data, HttpStatusCode::BAD_REQUEST);
     }
 
+    /**
+     * @param array<string, mixed> $data
+     */
     protected function unprocessableEntity(array $data = []): ResponseInterface
     {
         return $this->json($data, HttpStatusCode::UNPROCESSABLE_ENTITY);
