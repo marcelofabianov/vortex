@@ -59,5 +59,7 @@ RUN composer install --no-interaction --no-plugins --no-scripts --prefer-dist
 COPY --chown=appuser:appgroup . .
 
 EXPOSE 8080
+EXPOSE 9000
+EXPOSE 9003
 
 CMD ["php", "-S", "0.0.0.0:8080", "-t", "public"]

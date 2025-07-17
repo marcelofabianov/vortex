@@ -3,33 +3,34 @@
 # =================================================================
 # Docker & Application Aliases
 # =================================================================
-readonly DOCKER_NETWORK_NAME="vortex_vortex-network"
+DOCKER_NETWORK_NAME="vortex_vortex-network"
 
-alias g="docker exec -it vortex-api"
-alias gl="docker compose logs -f vortex-api"
-alias gd="docker compose up -d"
-alias gb="g bash"
-alias gds="docker compose stats"
+alias pa="docker exec -it vortex-api"
+alias pa.logs="docker compose logs -f vortex-api"
+alias pa.up="docker compose up -d"
+alias pa.bash="pa bash"
+alias pa.stats="docker compose stats"
+alias pa.aliases="cat .project_aliases.sh"
 
 # =================================================================
 # PHP Tooling Aliases
 # =================================================================
-alias gphp="g php"
-alias gcomposer="g composer"
-alias gtest="gcomposer test"
-alias gtest-watch="gcomposer test:watch"
-alias glint="gcomposer lint"
-alias gfix="gcomposer analyze"
-alias gcover="gcomposer test:coverage"
+alias pa.php="pa php"
+alias pa.composer="pa composer"
+alias pa.lint="pa.composer lint"
+alias pa.check="pa.composer analyze"
+alias pa.test="pa.composer test"
+alias pa.test-w="pa.composer test:watch"
+alias pa.test-cover="pa.composer test:coverage"
 
 # =================================================================
 # Goose Migration Aliases
 # =================================================================
-alias gs="g goose"
-alias gup="gs up"
-alias gdown="gs down"
-alias greset="gs reset"
-alias gcreate="gs create"
+alias pa.goose="g goose"
+alias pa.migration="gs up"
+alias pa.m-down="gs down"
+alias pa.m-reset="gs reset"
+alias pa.m-create="gs create"
 
 # =================================================================
 # NATS Tooling Aliases
