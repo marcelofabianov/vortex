@@ -8,7 +8,7 @@ DOCKER_NETWORK_NAME="vortex_vortex-network"
 alias pa="docker exec -it vortex-api"
 alias pa.logs="docker compose logs -f vortex-api"
 alias pa.up="docker compose up -d"
-alias pa.bash="pa bash"
+alias pa.shell="pa sh"
 alias pa.stats="docker compose stats"
 alias pa.aliases="cat .project_aliases.sh"
 
